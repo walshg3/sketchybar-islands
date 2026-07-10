@@ -80,6 +80,13 @@ launchctl kickstart -k gui/$(id -u)/homebrew.mxcl.sketchybar
 7. Bracket regex membership is evaluated at creation time only; islands
    containing async-created items (spaces, media) are rebuilt afterwards
    (see spaces.lua / media.lua).
+8. `sbar.exec` children inherit SIGCHLD = SIG_IGN, which breaks any child
+   that does its own process bookkeeping — brew's Ruby dies with
+   "undefined method 'success?' for nil" before printing anything, and a
+   trailing `| wc -l` masks it as a clean 0. Neither python's
+   `restore_signals` nor bash `trap - CHLD` undoes an inherited ignore;
+   the fix is an explicit `signal.signal(SIGCHLD, SIG_DFL)` in a python
+   wrapper before spawning the tool (see brew.lua).
 
 ## Module state
 

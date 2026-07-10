@@ -30,41 +30,50 @@ local function set_count(count)
 end
 
 local function refresh_count()
-  sbar.exec("/opt/homebrew/bin/brew outdated --quiet | wc -l", function(output)
-    set_count(tonumber(output) or 0)
-  end)
+  sbar.exec(
+    [[/usr/bin/python3 -c "import signal, subprocess; signal.signal(signal.SIGCHLD, signal.SIG_DFL); out = subprocess.run(['/opt/homebrew/bin/brew', 'outdated', '--quiet'], capture_output=True, text=True, check=True).stdout; print(sum(1 for line in out.splitlines() if line.strip()))"]],
+    function(output)
+      set_count(tonumber(output) or 0)
+    end
+  )
 end
 
 local function refresh_popup(show_popup)
-  sbar.exec("/opt/homebrew/bin/brew outdated --quiet", function(output)
-    local packages = {}
-    for package in output:gmatch "[^\r\n]+" do
-      packages[#packages + 1] = package
-    end
+  sbar.exec(
+    [[/usr/bin/python3 -c "import signal, subprocess; signal.signal(signal.SIGCHLD, signal.SIG_DFL); print(subprocess.run(['/opt/homebrew/bin/brew', 'outdated', '--quiet'], capture_output=True, text=True, check=True).stdout, end='')"]],
+    function(output)
+      local packages = {}
+      for package in output:gmatch "[^\r\n]+" do
+        packages[#packages + 1] = package
+      end
 
-    local count = #packages
-    set_count(count)
-    brew:set { popup = { drawing = count > 0 and show_popup or false } }
+      local count = #packages
+      set_count(count)
+      brew:set { popup = { drawing = count > 0 and show_popup or false } }
 
-    clear_popup()
-    if not show_popup then
-      return
-    end
+      clear_popup()
+      if not show_popup then
+        return
+      end
 
-    for index = 1, math.min(count, 10) do
-      sbar.add("item", "brew.outdated." .. index, {
-        position = "popup." .. brew.name,
-        label = { string = packages[index] },
-        icon = { drawing = false },
-        background = { drawing = false },
-      })
+      for index = 1, math.min(count, 10) do
+        sbar.add("item", "brew.outdated." .. index, {
+          position = "popup." .. brew.name,
+          label = { string = packages[index] },
+          icon = { drawing = false },
+          background = { drawing = false },
+        })
+      end
     end
-  end)
+  )
 end
 
 brew:subscribe({ "routine", "system_woke" }, function()
   refresh_count()
 end)
+
+-- First check at config load; the routine tick is up to 6h away.
+refresh_count()
 
 brew:subscribe("mouse.clicked", function()
   local show_popup = brew:query().popup.drawing == "off"

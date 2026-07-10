@@ -17,19 +17,21 @@ sbar.exec(provider_command)
 local latest_disk_free = "--"
 local latest_disk_usage = "--"
 
--- Inline speeds; width 70 per side fits "999KB/s" so nothing overlaps on
--- the MacBook screen (55 was too tight).
+-- Inline speeds. Widths are measured, not guessed: the widest provider
+-- output ("10.5MB/s") renders at ~84px per side at this font, so 85 fixed
+-- keeps the island from jittering and the 6px gap keeps down/up apart.
 local net = sbar.add("item", "right.stats.net", {
   position = "right",
   icon = {
     string = icons.wifi.download .. " --",
     color = colors.net_down,
-    width = 70,
+    width = 85,
+    padding_right = 6,
   },
   label = {
     string = icons.wifi.upload .. " --",
     color = colors.net_up,
-    width = 70,
+    width = 85,
   },
   background = { drawing = false },
 })
