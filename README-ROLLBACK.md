@@ -91,11 +91,3 @@ launchctl kickstart -k gui/$(id -u)/homebrew.mxcl.sketchybar
 - If SbarLua is ever rebuilt, the interpreter in `sketchybarrc` must match
   the Lua the module expects (HEAD vendors 5.5; `/opt/homebrew/bin/lua` is
   5.5). `lua@5.4` is installed if an older SbarLua is ever needed.
-
-## Housekeeping note
-
-`/opt/homebrew/var/log/sketchybar/` holds ~1.4GB of accumulated logs
-(sketchybar.err.log 462MB, sketchybar.out.log 971MB), mostly months of
-"Can't connect to AeroSpace server" spam from the classic era. Safe to
-truncate when convenient:
-`: > /opt/homebrew/var/log/sketchybar/sketchybar.err.log` (same for out.log).
