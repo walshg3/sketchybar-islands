@@ -17,20 +17,61 @@ sbar.exec(provider_command)
 local latest_disk_free = "--"
 local latest_disk_usage = "--"
 
+-- Compact arrows inline; the actual speeds live in a click-down popup
+-- (inline numbers didn't fit on the MacBook screen).
 local net = sbar.add("item", "right.stats.net", {
   position = "right",
   icon = {
-    string = icons.wifi.download .. " --",
+    string = icons.wifi.download,
     color = colors.net_down,
-    width = 55,
+    padding_left = 4,
+    padding_right = 1,
   },
   label = {
-    string = icons.wifi.upload .. " --",
+    string = icons.wifi.upload,
     color = colors.net_up,
-    width = 55,
+    padding_left = 1,
+    padding_right = 4,
+  },
+  background = { drawing = false },
+  popup = { align = "center", y_offset = 2 },
+})
+
+local net_down_row = sbar.add("item", {
+  position = "popup." .. net.name,
+  icon = {
+    string = "Download:",
+    color = colors.net_down,
+    width = 95,
+    align = "left",
+  },
+  label = {
+    string = "--",
+    width = 85,
+    align = "right",
   },
   background = { drawing = false },
 })
+
+local net_up_row = sbar.add("item", {
+  position = "popup." .. net.name,
+  icon = {
+    string = "Upload:",
+    color = colors.net_up,
+    width = 95,
+    align = "left",
+  },
+  label = {
+    string = "--",
+    width = 85,
+    align = "right",
+  },
+  background = { drawing = false },
+})
+
+net:subscribe("mouse.clicked", function()
+  net:set { popup = { drawing = "toggle" } }
+end)
 
 local ram = sbar.add("item", "right.stats.ram", {
   position = "right",
@@ -98,10 +139,8 @@ cpu:subscribe("system_stats", function(env)
 
   cpu:set { label = env.CPU_USAGE or "--" }
   ram:set { label = env.RAM_USAGE or "--" }
-  net:set {
-    icon = { string = icons.wifi.download .. " " .. (env.NETWORK_RX_en0 or "--") },
-    label = { string = icons.wifi.upload .. " " .. (env.NETWORK_TX_en0 or "--") },
-  }
+  net_down_row:set { label = env.NETWORK_RX_en0 or "--" }
+  net_up_row:set { label = env.NETWORK_TX_en0 or "--" }
 end)
 
 ram:subscribe("mouse.clicked", function()

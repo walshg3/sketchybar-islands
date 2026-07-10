@@ -34,7 +34,9 @@ display.mode(function(mode)
     },
     popup = {
       horizontal = true,
-      align = "center",
+      -- In notch mode the item hugs the notch's left edge; a centered popup
+      -- bleeds under the notch, so open it leftward instead.
+      align = mode == "wide" and "center" or "right",
       y_offset = 2,
     },
   })
