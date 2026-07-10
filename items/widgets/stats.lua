@@ -10,9 +10,17 @@ sbar.add("event", "system_stats")
 -- still processing config makes its initial mach registration fail and it
 -- exits. Shell-side sleep, NOT sbar.delay — a top-level sbar.delay (before
 -- the event loop exists) segfaults the module at config load.
+local provider_args = " --cpu usage --memory ram_usage --disk free usage --network en0 --interval 2"
 local provider_command = "sleep 3; killall stats_provider >/dev/null; /opt/homebrew/bin/stats_provider"
-  .. " --cpu usage --memory ram_usage --disk free usage --network en0 --interval 2"
+  .. provider_args
 sbar.exec(provider_command)
+
+-- The provider dies across sleep/wake and nothing else restarts it, so the
+-- stats freeze at their last values. Guarded respawn: only spawns when the
+-- provider is actually gone (checked on wake and once a minute).
+local ensure_provider_command = "pgrep -x stats_provider >/dev/null || { sleep 1; /opt/homebrew/bin/stats_provider"
+  .. provider_args
+  .. "; }"
 
 local latest_disk_free = "--"
 local latest_disk_usage = "--"
@@ -84,6 +92,7 @@ local disk_usage = sbar.add("item", {
 -- lives in a CLI-created companion graph pushed via the CLI as well.
 local cpu = sbar.add("item", "right.stats.cpu", {
   position = "right",
+  update_freq = 60,
   icon = {
     string = icons.cpu,
     color = colors.cpu,
@@ -95,6 +104,10 @@ local cpu = sbar.add("item", "right.stats.cpu", {
   background = { drawing = false },
   click_script = "open -a 'Activity Monitor'",
 })
+
+cpu:subscribe({ "routine", "system_woke" }, function()
+  sbar.exec(ensure_provider_command)
+end)
 
 cpu:subscribe("system_stats", function(env)
   latest_disk_free = env.DISK_FREE or latest_disk_free
