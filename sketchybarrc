@@ -1,0 +1,26 @@
+#!/bin/bash
+# sketchybar config entrypoint. sketchybar v2.24 SIGKILLs the config script's
+# process group ~60s after launch (it expects shell configs that exit), which
+# kills SbarLua's resident event-loop process. So this script only:
+#   1. kills the previous detached config generation (the daemon no longer
+#      can, by design),
+#   2. spawns rc-runner.sh in a NEW SESSION (outside the watchdog's reach),
+#   3. exits immediately so the daemon sees a well-behaved config script.
+cd "$(dirname "$0")"
+echo "[rc] entry pid=$$ ppid=$PPID t=$(date +%T)" >> /tmp/rc_trace.log
+pkill -f "bash $HOME/.config/sketchybar/rc-runner.sh" 2>/dev/null
+pkill -f "lua $HOME/.config/sketchybar/rc.lua" 2>/dev/null
+sleep 0.4
+/usr/bin/env python3 - "$HOME/.config/sketchybar" <<'EOF'
+import subprocess, sys
+cfg = sys.argv[1]
+log = open("/tmp/rc_runner.log", "ab")
+subprocess.Popen(
+    ["/bin/bash", cfg + "/rc-runner.sh"],
+    cwd=cfg,
+    stdout=log,
+    stderr=subprocess.STDOUT,
+    start_new_session=True,
+)
+EOF
+exit 0

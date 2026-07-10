@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <title>Dia color candidate</title>
+  <defs>
+    <linearGradient id="tile" x1="50" y1="10" x2="50" y2="90" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f1f0f7"/>
+    </linearGradient>
+    <linearGradient id="horizon" x1="50" y1="24" x2="50" y2="73" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2f68d6"/>
+      <stop offset="0.43" stop-color="#86b8e2"/>
+      <stop offset="0.69" stop-color="#f4dc52"/>
+      <stop offset="1" stop-color="#f15b72"/>
+    </linearGradient>
+  </defs>
+  <rect x="10" y="10" width="80" height="80" rx="18" fill="url(#tile)"/>
+  <path fill="url(#horizon)" d="M19 67C18 63 18 59 19 54C22 35 35 24 50 24C65 24 78 35 81 54C82 59 82 63 81 67C80 72 76 74 72 73C63 69 56 68 50 68C44 68 37 69 28 73C24 74 20 72 19 67Z"/>
+  <path fill="none" stroke="#ffffff" stroke-opacity="0.35" stroke-width="2" d="M24 61C27 42 38 31 50 31C62 31 73 42 76 61"/>
+  <path fill="none" stroke="#1b3f90" stroke-opacity="0.25" stroke-width="2" d="M21 65C31 61 41 59 50 59C59 59 69 61 79 65"/>
+</svg>

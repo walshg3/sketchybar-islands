@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2">
+  <title>T3 Code Nightly</title>
+  <path fill="black" d="M22 0H78C90.15 0 100 9.85 100 22V78C100 90.15 90.15 100 78 100H22C9.85 100 0 90.15 0 78V22C0 9.85 9.85 0 22 0Z
+M15 22V35H41V78H56V35H84V22H15Z
+M61 39V51H74L63 60V69H68C74 69 77 71 77 75C77 79 73 81 67 81C62 81 58 79 54 75L48 84C53 89 59 92 68 92C82 92 91 85 91 75C91 67 85 62 77 60L88 50V39H61Z"/>
+</svg>

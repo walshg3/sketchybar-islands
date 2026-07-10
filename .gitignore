@@ -1,0 +1,9 @@
+# Runtime state (theme persistence; defaults to mocha when absent)
+flavor
+
+# Compiled helper binaries (rebuilt by helpers/init.lua at config load)
+helpers/menus/bin/
+helpers/event_providers/*/bin/
+
+# macOS
+.DS_Store
