@@ -1,8 +1,5 @@
-local settings = require "settings"
-
 local icons = {
   sf_symbols = {
-    plus = "􀅼",
     loading = "􀖇",
     apple = "􀣺",
     gear = "􀍟",
@@ -11,13 +8,8 @@ local icons = {
     music = "􀑪",
     calendar = "􀐫",
     message = "􁋬",
-    separators = {
-      left = "􀄪",
-      right = "􀄫",
-    },
     space_indicator = {
       on = "󰄯",
-      off = "󰄰",
     },
 
     switch = {
@@ -46,7 +38,6 @@ local icons = {
       disconnected = "􀙈",
       router = "􁓤",
       vpn = "󰌾",
-      test = "",
     },
     media = {
       back = "􀊊",
@@ -60,8 +51,4 @@ local icons = {
   },
 }
 
-if not (settings.icons == "NerdFont") then
-  return icons.sf_symbols
-else
-  return icons.nerdfont
-end
+return icons.sf_symbols

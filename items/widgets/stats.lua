@@ -87,9 +87,8 @@ local disk_usage = sbar.add("item", {
   background = { drawing = false },
 })
 
--- NOT sbar.add("graph", ...): the module's graph-add serialization segfaults
--- against sketchybar v2.24, so this is a plain item and the graph history
--- lives in a CLI-created companion graph pushed via the CLI as well.
+-- The module's graph add segfaults against sketchybar v2.24, so CPU is
+-- deliberately a percent label only.
 local cpu = sbar.add("item", "right.stats.cpu", {
   position = "right",
   update_freq = 60,

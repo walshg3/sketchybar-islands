@@ -3,9 +3,10 @@
 # with setsid by sketchybarrc) so sketchybar v2.24's config-script watchdog,
 # which SIGKILLs the config process group ~60s after launch, cannot reap the
 # event-loop process. Retries segfaults (module mach-port race at boot).
-cd "$(dirname "$0")"
+cd "$(dirname "$0")" || exit 1
 T=/tmp/rc_trace.log
 echo "[rc] runner start pid=$$ pgid=$(ps -o pgid= -p $$ | tr -d ' ') t=$(date +%T)" >> "$T"
+pgrep -f "bash .*sketchybar/rc-runner.sh" | grep -v "^$$\$" | xargs kill 2>/dev/null
 for attempt in 1 2 3 4 5; do
   /opt/homebrew/bin/lua "$PWD/rc.lua"
   code=$?
@@ -13,3 +14,4 @@ for attempt in 1 2 3 4 5; do
   [ "$code" -eq 139 ] || break
   sleep 0.6
 done
+exit "$code"

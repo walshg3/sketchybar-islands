@@ -6,7 +6,8 @@
 #      can, by design),
 #   2. spawns rc-runner.sh in a NEW SESSION (outside the watchdog's reach),
 #   3. exits immediately so the daemon sees a well-behaved config script.
-cd "$(dirname "$0")"
+cd "$(dirname "$0")" || exit 1
+[ "$(stat -f%z /tmp/rc_trace.log 2>/dev/null || echo 0)" -le 1000000 ] || : > /tmp/rc_trace.log
 echo "[rc] entry pid=$$ ppid=$PPID t=$(date +%T)" >> /tmp/rc_trace.log
 pkill -f "bash $HOME/.config/sketchybar/rc-runner.sh" 2>/dev/null
 pkill -f "lua $HOME/.config/sketchybar/rc.lua" 2>/dev/null

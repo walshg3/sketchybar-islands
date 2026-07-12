@@ -49,7 +49,7 @@ local function update_menus()
     menu_padding:set { drawing = true }
     local id = 1
     for menu in menus:gmatch "[^\r\n]+" do
-      if id < max_items then
+      if id <= max_items then
         menu_items[id]:set { label = menu, drawing = true }
       else
         break
@@ -67,6 +67,7 @@ space_menu_swap:subscribe("swap_menus_and_spaces", function()
     menu_watcher:set { updates = false }
     sbar.set("/left\\.menu\\..*/", { drawing = false })
     sbar.set("/left\\.space\\..*/", { drawing = true })
+    sbar.trigger "aerospace_focus_change"
   else
     menu_watcher:set { updates = true }
     sbar.set("/left\\.space\\..*/", { drawing = false })

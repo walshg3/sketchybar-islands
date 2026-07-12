@@ -95,7 +95,8 @@ local palettes = {
 }
 
 local flavor = "mocha"
-local flavor_file = io.open(os.getenv("HOME") .. "/.config/sketchybar/flavor", "r")
+local config_dir = os.getenv "CONFIG_DIR" or (os.getenv "HOME" .. "/.config/sketchybar")
+local flavor_file = io.open(config_dir .. "/flavor", "r")
 if flavor_file then
   local saved_flavor = flavor_file:read("*a"):match("^%s*(.-)%s*$")
   flavor_file:close()

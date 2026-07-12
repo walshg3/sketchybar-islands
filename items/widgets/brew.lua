@@ -17,7 +17,7 @@ local brew = sbar.add("item", "right.brew", {
 })
 
 local function clear_popup()
-  sbar.remove "/brew.outdated\\.*/"
+  sbar.remove "/brew\\.outdated\\..*/"
 end
 
 local function set_count(count)
@@ -33,7 +33,10 @@ local function refresh_count()
   sbar.exec(
     [[/usr/bin/python3 -c "import signal, subprocess; signal.signal(signal.SIGCHLD, signal.SIG_DFL); out = subprocess.run(['/opt/homebrew/bin/brew', 'outdated', '--quiet'], capture_output=True, text=True, check=True).stdout; print(sum(1 for line in out.splitlines() if line.strip()))"]],
     function(output)
-      set_count(tonumber(output) or 0)
+      local count = tonumber(type(output) == "string" and output:match "^%s*(%d+)%s*$" or nil)
+      if count then
+        set_count(count)
+      end
     end
   )
 end

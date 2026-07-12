@@ -6,6 +6,7 @@ local vpn = sbar.add("item", "right.vpn", {
   position = "right",
   drawing = false,
   updates = true, -- default when_shown never wakes a hidden item
+  update_freq = 60,
   icon = {
     string = icons.wifi.vpn,
     color = color,
@@ -24,5 +25,5 @@ local function update_vpn()
   end)
 end
 
-vpn:subscribe({ "wifi_change", "system_woke" }, update_vpn)
+vpn:subscribe({ "routine", "wifi_change", "system_woke" }, update_vpn)
 update_vpn()

@@ -38,7 +38,8 @@ local function hide()
 end
 
 local function update()
-  local location_command = "sh -c 'if [ -s /tmp/sketchybar_loc ]; then "
+  local location_command = "sh -c 'if [ -n \"$(find /tmp/sketchybar_loc -mmin -60 2>/dev/null)\" ] "
+    .. "&& [ -s /tmp/sketchybar_loc ]; then "
     .. "cat /tmp/sketchybar_loc; else loc=$(curl -sf --max-time 5 ipinfo.io/loc); "
     .. "if [ -n \"$loc\" ]; then printf \"%s\" \"$loc\" > /tmp/sketchybar_loc; "
     .. "printf \"%s\" \"$loc\"; fi; fi'"

@@ -6,6 +6,10 @@ local popup_width = 250
 local device_color = theme.sections.text.secondary
 local selected_device_color = theme.sections.accent
 
+local function shell_escape(s)
+  return "'" .. s:gsub("'", "'\\''") .. "'"
+end
+
 local volume = sbar.add("item", "right.volume", {
   position = "right",
   icon = { color = colors.icon },
@@ -58,7 +62,7 @@ local function collapse_details()
   end
 
   volume:set { popup = { drawing = false } }
-  sbar.remove "/volume.device\\.*/"
+  sbar.remove "/volume\\.device\\..*/"
 end
 
 local function toggle_details(env)
@@ -86,9 +90,9 @@ local function toggle_details(env)
           align = "center",
           label = { string = device, color = color },
           background = { drawing = false },
-          click_script = 'SwitchAudioSource -s "'
-            .. device
-            .. '" && sketchybar --set /volume.device\\.*/ label.color='
+          click_script = "SwitchAudioSource -s "
+            .. shell_escape(device)
+            .. " && sketchybar --set /volume\\.device\\..*/ label.color="
             .. device_color
             .. " --set $NAME label.color="
             .. selected_device_color,

@@ -7,7 +7,7 @@ local cache_file = "/tmp/sketchybar_display_mode"
 -- aerospace CLI is always answerable. Only built-in monitor(s) => notch mode.
 local function mode_from_monitors(monitors)
   if type(monitors) ~= "string" or monitors:match "^%s*$" then
-    return "wide"
+    return nil
   end
   for line in monitors:gmatch "[^\r\n]+" do
     if not line:find "Built%-in" then
@@ -17,14 +17,23 @@ local function mode_from_monitors(monitors)
   return "notch"
 end
 
-function M.mode(callback)
+function M.detect(callback)
   sbar.exec("/opt/homebrew/bin/aerospace list-monitors --format %{monitor-name}", function(monitors)
     callback(mode_from_monitors(monitors))
   end)
 end
 
+function M.mode(callback)
+  M.detect(function(mode)
+    callback(mode or "wide")
+  end)
+end
+
 local function refresh(reload_on_change)
-  M.mode(function(mode)
+  M.detect(function(mode)
+    if not mode then
+      return
+    end
     sbar.exec("cat " .. cache_file .. " 2>/dev/null || true", function(cached)
       cached = type(cached) == "string" and cached:match "^%s*(.-)%s*$" or ""
       if cached == mode then
