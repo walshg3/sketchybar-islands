@@ -5,6 +5,15 @@ transparent bar, themed with Catppuccin and driven by AeroSpace. Runs on the
 2026 rebuild of the personal-Mac setup (5120x1440 ultrawide plus a notched
 16" MacBook Pro).
 
+## Showcase
+
+Mocha, macchiato, and frappe on the notched MacBook display (workspaces with
+per-app glyphs left, media at the notch, stats/widgets/clock right):
+
+![mocha](screenshots/bar-mocha-notch.png)
+![macchiato](screenshots/bar-macchiato-notch.png)
+![frappe](screenshots/bar-frappe-notch.png)
+
 ## Layout
 
 - **Left island:** Apple menu trigger, AeroSpace workspaces with per-space app
