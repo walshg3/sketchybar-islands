@@ -227,9 +227,4 @@ custom-icons/         SVG sources for locally patched app-font glyphs
 
 ## License
 
-<!-- Maintainer note: this repo currently has no LICENSE file. Add one before
-     publishing (MIT suggested, matching SketchyBar itself) and replace this
-     section with the standard one-liner. Verify the licensing of the bundled
-     C helpers derived from FelixKratz's example config first. -->
-
-No license file yet. Until a LICENSE file is added, this code is all rights reserved by default.
+[MIT](LICENSE). The `menus` and event provider C helpers are based on Felix Kratz's example SketchyBar configuration, used under the same MIT terms.
