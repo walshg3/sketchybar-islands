@@ -14,12 +14,10 @@ per-app glyphs left, media at the notch, stats/widgets/clock right):
 ![macchiato](screenshots/bar-macchiato-notch.png)
 ![frappe](screenshots/bar-frappe-notch.png)
 
-The media island expanded (hover or track change) and with its popup
-controls open:
+The media island expanded (hover or track change):
 
 <p>
   <img src="screenshots/media-nowplaying-notch.png" width="290" alt="now playing">
-  <img src="screenshots/media-popup-notch.png" width="290" alt="media popup">
 </p>
 
 ## Layout
