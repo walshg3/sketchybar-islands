@@ -219,7 +219,7 @@ custom-icons/         SVG sources for locally patched app-font glyphs
 
 ## Credits
 
-- [FelixKratz](https://github.com/FelixKratz) for SketchyBar and SbarLua; the `menus` and event-provider C helpers are based on his example SketchyBar configuration
+- [SketchyBar](https://github.com/FelixKratz/SketchyBar) and [SbarLua](https://github.com/FelixKratz/SbarLua), the bar and its Lua runtime
 - [Catppuccin](https://github.com/catppuccin/catppuccin) for the palettes
 - [joncrangle/sketchybar-system-stats](https://github.com/joncrangle/sketchybar-system-stats) for the event-driven stats provider
 - [kvndrsslr/sketchybar-app-font](https://github.com/kvndrsslr/sketchybar-app-font) for the app glyph font
@@ -227,4 +227,4 @@ custom-icons/         SVG sources for locally patched app-font glyphs
 
 ## License
 
-[MIT](LICENSE). The `menus` and event provider C helpers are based on Felix Kratz's example SketchyBar configuration, used under the same MIT terms.
+[MIT](LICENSE).
