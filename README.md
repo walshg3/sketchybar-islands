@@ -1,6 +1,6 @@
 # SketchyBar Islands
 
-A Catppuccin-themed [SketchyBar](https://github.com/FelixKratz/SketchyBar) setup that draws three floating "islands" on a fully transparent bar: AeroSpace workspaces on the left, Spotify now playing in the center, and system widgets on the right. Written in Lua on SbarLua, with a process architecture that survives SketchyBar v2.24's config watchdog and a documented list of hard-won SbarLua gotchas.
+A Catppuccin-themed [SketchyBar](https://github.com/FelixKratz/SketchyBar) setup that draws three floating "islands" on a fully transparent bar: AeroSpace workspaces on the left, Spotify now playing in the center, and system widgets on the right. Written in Lua on SbarLua.
 
 ## Showcase
 
