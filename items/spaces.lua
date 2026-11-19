@@ -6,7 +6,31 @@ local icon_map = require "helpers.icon_map"
 sbar.add("event", "aerospace_workspace_change")
 sbar.add("event", "aerospace_focus_change")
 
-sbar.exec("aerospace list-workspaces --all", function(spaces)
+-- SketchyBar can start before AeroSpace at login. Retry asynchronously so
+-- the other items load while we wait for the workspace list. Give up after
+-- MAX_WORKSPACE_ATTEMPTS (about a minute) so a missing AeroSpace doesn't
+-- spawn a process every second forever; `sketchybar --reload` tries again.
+local MAX_WORKSPACE_ATTEMPTS = 60
+
+local function with_workspaces(callback, attempt)
+  attempt = attempt or 1
+  sbar.exec("aerospace list-workspaces --all 2>/dev/null", function(spaces)
+    if type(spaces) ~= "string" or spaces:match "^%s*$" then
+      if attempt >= MAX_WORKSPACE_ATTEMPTS then
+        io.stderr:write("spaces: no AeroSpace workspaces after " .. attempt .. " attempts; giving up\n")
+        return
+      end
+      -- A shell delay is safe before the event loop starts; sbar.delay is not.
+      sbar.exec("sleep 1", function()
+        with_workspaces(callback, attempt + 1)
+      end)
+      return
+    end
+    callback(spaces)
+  end)
+end
+
+with_workspaces(function(spaces)
   local space_items = {}
 
   for space_name in spaces:gmatch "[^\r\n]+" do
