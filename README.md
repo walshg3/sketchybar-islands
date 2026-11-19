@@ -144,7 +144,7 @@ Each item is one file, so most changes are local edits:
 
 ## Privacy and permissions notes
 
-- The weather widget fetches your approximate location once from `ipinfo.io/loc` (cached in `/tmp/sketchybar_loc`) and then queries `api.open-meteo.com`. Delete the cache file to refresh the location, or remove the widget to avoid the network calls entirely.
+- The weather widget queries `api.open-meteo.com` for your location. To pin it, put `latitude,longitude` on one line in a `location` file in this directory (it is gitignored), which also skips the IP lookup. Otherwise it fetches your approximate location from `ipinfo.io/loc` (cached in `/tmp/sketchybar_loc`; delete the cache file to refresh it). Remove the widget to avoid the network calls entirely.
 - The Messages badge runs a read-only SQLite query against `~/Library/Messages/chat.db`, which requires Full Disk Access for the SketchyBar process.
 
 ## Reload

@@ -37,6 +37,19 @@ local function hide()
   weather:set { drawing = false, label = { string = "" } }
 end
 
+-- Optional pinned location: a gitignored `location` file in the config dir
+-- holding "latitude,longitude". Without it, fall back to IP geolocation.
+local function pinned_location()
+  local dir = os.getenv "CONFIG_DIR" or ((os.getenv "HOME" or "") .. "/.config/sketchybar")
+  local file = io.open(dir .. "/location", "r")
+  if not file then
+    return nil
+  end
+  local location = file:read "*l"
+  file:close()
+  return location
+end
+
 local function update()
   local location_command = "sh -c 'if [ -n \"$(find /tmp/sketchybar_loc -mmin -60 2>/dev/null)\" ] "
     .. "&& [ -s /tmp/sketchybar_loc ]; then "
@@ -44,7 +57,7 @@ local function update()
     .. "if [ -n \"$loc\" ]; then printf \"%s\" \"$loc\" > /tmp/sketchybar_loc; "
     .. "printf \"%s\" \"$loc\"; fi; fi'"
 
-  sbar.exec(location_command, function(location)
+  local function fetch_weather(location)
     local latitude, longitude = (location or ""):match("^%s*([%-]?%d+%.?%d*),([%-]?%d+%.?%d*)%s*$")
     if not latitude or not longitude then
       hide()
@@ -80,7 +93,14 @@ local function update()
         label = { string = string.format("%.0f°F %s", temperature, condition) },
       }
     end)
-  end)
+  end
+
+  local pinned = pinned_location()
+  if pinned then
+    fetch_weather(pinned)
+  else
+    sbar.exec(location_command, fetch_weather)
+  end
 end
 
 weather:subscribe({ "routine", "system_woke" }, update)
